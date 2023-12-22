@@ -3,7 +3,19 @@ ansible-navigator:
   execution-environment:
     # container-options:
       # - --net=host
-    image: quay.io/openshift-example/kubevirt-ansible-ee:202312221824
+    image: quay.io/openshift-example/kubevirt-ansible-ee:202312222105
+    environment-variables:
+      pass:
+        - KUBECONFIG
+        - K8S_AUTH_KUBECONFIG
+    volume-mounts:
+      # Ugly as hell.. I don't know a better solution yet
+      - src: "/var/home/rbohne/.kube"
+        dest: "/var/home/rbohne/.kube"
+        options: "Z"
+      - src: "/var/home/rbohne/Downloads"
+        dest: "/var/home/rbohne/Downloads"
+        options: "Z"
   logging:
     level: info
   mode: stdout
