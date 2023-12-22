@@ -1,0 +1,12 @@
+---
+ansible-navigator:
+  execution-environment:
+    # container-options:
+      # - --net=host
+    image: quay.io/openshift-example/kubevirt-ansible-ee:202312221824
+  logging:
+    level: info
+  mode: stdout
+  playbook-artifact:
+    enable: true
+    save-as: /tmp/example-openshift-kubevirt-{playbook_name}-artifact-{time_stamp}.json
