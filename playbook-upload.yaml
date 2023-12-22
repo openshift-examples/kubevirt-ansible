@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    upload_host: https://cdi-uploadproxy-openshift-cnv.apps.isar.coe.muc.redhat.com
+    namespace: demo-cluster-disco
+  tasks:
+    # virtctl image-upload pvc foo --size 2Gi --storage-class coe-netapp-nas --image-path ~/Downloads/beryllium-1-i386.hybrid.iso
+
+    - name: Prepare pvc
+      kubevirt_pvc:
+        name: beryllium-1-i386-hybrid3
+        namespace: "{{ namespace  }}"
+        size: 2Gi
+        access_modes:
+          - ReadWriteMany
+        cdi_source:
+          upload: yes
+
+    - name: Upload
+      kubevirt_cdi_upload:
+        pvc_namespace: "{{ namespace }}"
+        pvc_name: beryllium-1-i386-hybrid3
+        upload_host: "{{ upload_host }}"
+        upload_host_validate_certs: false
+        path: /var/home/rbohne/Downloads/beryllium-1-i386.hybrid.iso
+
