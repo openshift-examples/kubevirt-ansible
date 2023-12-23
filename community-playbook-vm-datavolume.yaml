@@ -6,19 +6,8 @@
     namespace: demo-cluster-disco
   tasks:
 
-    # - name: Prepare rootdisk
-    #   kubevirt_pvc:
-    #     name: beryllium-rootdisk
-    #     namespace: "{{ namespace  }}"
-    #     storage_class_name: coe-netapp-nas
-    #     size: 80Gi
-    #     access_modes:
-    #       - ReadWriteMany
-    #     cdi_source:
-    #       blank: yes
-
     - name: VM
-      kubevirt_vm:
+      community.kubevirt.kubevirt_vm:
         state: running
         name: beryllium
         namespace: "{{ namespace }}"

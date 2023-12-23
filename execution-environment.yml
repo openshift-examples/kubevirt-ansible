@@ -7,6 +7,8 @@ dependencies:
 
 additional_build_steps:
   append:
+
     # Because: https://github.com/ansible-collections/community.kubevirt/issues/47
+    #   community.kubevirt is UNMAINTAINED
     - RUN sed -i /usr/share/ansible/collections/ansible_collections/community/kubevirt/plugins/modules/kubevirt_cdi_upload.py -e 's/v1alpha1/v1beta1/'
 

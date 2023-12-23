@@ -7,7 +7,7 @@
   tasks:
 
     - name: Prepare rootdisk
-      kubevirt_pvc:
+      community.kubevirt.kubevirt_pvc:
         name: beryllium-rootdisk
         namespace: "{{ namespace  }}"
         storage_class_name: coe-netapp-nas
@@ -18,7 +18,7 @@
           blank: yes
 
     - name: VM
-      kubevirt_vm:
+      community.kubevirt.kubevirt_vm:
         state: running
         name: beryllium
         namespace: "{{ namespace }}"
