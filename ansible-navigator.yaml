@@ -13,6 +13,7 @@ ansible-navigator:
       - src: "/var/home/rbohne/.kube"
         dest: "/var/home/rbohne/.kube"
         options: "Z"
+        # Just needed for the upload
       - src: "/var/home/rbohne/Downloads"
         dest: "/var/home/rbohne/Downloads"
         options: "Z"
