@@ -3,7 +3,7 @@ ansible-navigator:
   execution-environment:
     # container-options:
       # - --net=host
-    image: quay.io/openshift-example/kubevirt-ansible-ee:main
+    image: quay.io/openshift-examples/kubevirt-ansible-ee:202312291719
     environment-variables:
       pass:
         - KUBECONFIG
