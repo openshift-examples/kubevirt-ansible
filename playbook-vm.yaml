@@ -3,7 +3,7 @@
   connection: local
   gather_facts: false
   vars:
-    namespace: demo-cluster-disco
+    namespace: rbohne-virt-roadshow
   tasks:
 
     - name: VM
@@ -32,7 +32,7 @@
           volumes:
             - name: cdrom
               persistentVolumeClaim:
-                claimName: beryllium-1-i386-hybrid
+                claimName: customer-iso
             - name: root
               dataVolume:
                 name: beryllium-root
@@ -40,17 +40,14 @@
             - name: coe
               multus:
                 networkName: coe-bridge
-            - name: disco
-              multus:
-                networkName: coe-br-vlan-69
           domain:
             cpu:
-              cores: 4
+              cores: 2
             memory:
-              guest: 8Gi
+              guest: 4Gi
             resources:
               requests:
-                memory: 8Gi
+                memory: 4Gi
             devices:
               disks:
                 - name: root
@@ -63,10 +60,5 @@
                     bus: sata
               interfaces:
                 - bridge: {}
-                  # macAddress: 02:d8:6d:00:00:12
                   model: virtio
                   name: coe
-                - bridge: {}
-                  # macAddress: 02:d8:6d:00:00:13
-                  model: virtio
-                  name: disco
