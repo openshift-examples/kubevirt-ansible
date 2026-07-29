@@ -1,0 +1,27 @@
+---
+# Execution
+# cp -v $KUBECONFIG .
+# /Users/rbohne/.kube/.switch_tmp/config.2962012707.tmp -> ./config.2962012707.tmp
+# export K8S_AUTH_KUBECONFIG=$(basename $KUBECONFIG)
+# ansible-navigator run playbook-adjust-vm.yaml
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    namespace: rbohne-kubevirt-ansible
+    new_memory: 16Gi
+
+  tasks:
+
+    - name: Adjust Memory of VM
+      kubevirt.core.kubevirt_vm:
+        state: present
+        wait: true
+        name: rhel9
+        namespace: "{{ namespace }}"
+
+        spec:
+          domain:
+            memory:
+              guest: "{{ new_memory }}"
