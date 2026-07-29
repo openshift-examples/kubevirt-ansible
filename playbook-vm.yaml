@@ -1,41 +1,44 @@
 ---
+# Execution
+# cp -v $KUBECONFIG .
+# /Users/rbohne/.kube/.switch_tmp/config.2962012707.tmp -> ./config.2962012707.tmp
+# export K8S_AUTH_KUBECONFIG=$(basename $KUBECONFIG)
+# ansible-navigator run playbook-vm.yaml
+
 - hosts: localhost
   connection: local
   gather_facts: false
   vars:
-    namespace: rbohne-virt-roadshow
+    namespace: rbohne-kubevirt-ansible
   tasks:
 
-    - name: VM
+    - name: Deploy VM
       kubevirt.core.kubevirt_vm:
         state: present
-        running: true # default
+        run_strategy: Always # default
         wait: true
-        name: beryllium
+        name: rhel9
         namespace: "{{ namespace }}"
 
         data_volume_templates:
           - metadata:
-              name: beryllium-root
+              name: rhel9-root
             spec:
               storage:
                 accessModes:
                   - ReadWriteMany
-                storageClassName: coe-netapp-nas
                 resources:
                   requests:
-                    storage: 80Gi
-              source:
-                blank: {}
-
+                    storage: 30Gi
+              sourceRef:
+                kind: DataSource
+                name: rhel9
+                namespace: openshift-virtualization-os-images
         spec:
           volumes:
-            - name: cdrom
-              persistentVolumeClaim:
-                claimName: customer-iso
             - name: root
               dataVolume:
-                name: beryllium-root
+                name: rhel9-root
           networks:
             - name: coe
               multus:
@@ -54,10 +57,6 @@
                   bootOrder: 1
                   disk:
                     bus: virtio
-                - name: cdrom
-                  bootOrder: 2
-                  cdrom:
-                    bus: sata
               interfaces:
                 - bridge: {}
                   model: virtio
