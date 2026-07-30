@@ -6,7 +6,7 @@ tags: ['ansible','kubevirt','cnv','ocp-v']
 icon: material/ansible
 ---
 
-# OpenShift Virt & Ansible examples
+# Ansible
 
 ???+ note
 
@@ -14,10 +14,15 @@ icon: material/ansible
 
 * Documentation [kubevirt.core.kubevirt_vm](https://kubevirt.io/kubevirt.core/1.1.0/plugins/kubevirt_vm.html)
 
-
-# Playbook examples
+## Playbook examples
 
 ??? example "Upload an ISO"
+
+    === "Download: playbook-upload.yaml"
+
+        ```shell
+        curl -L -O {{ page.canonical_url }}playbook-upload.yaml
+        ```
 
     === "playbook-upload.yaml"
 
@@ -25,13 +30,13 @@ icon: material/ansible
         --8<-- "content/kubevirt/ansible/playbook-upload.yaml"
         ```
 
-    === "Download"
-
-        ```bash
-        curl -L -O {{ page.canonical_url }}playbook-upload.yaml
-        ```
-
 ??? example "Deploy VM example"
+
+    === "Download: playbook-vm.yaml"
+
+        ```shell
+        curl -L -O {{ page.canonical_url }}playbook-vm.yaml
+        ```
 
     === "playbook-vm.yaml"
 
@@ -39,13 +44,7 @@ icon: material/ansible
         --8<-- "content/kubevirt/ansible/playbook-vm.yaml"
         ```
 
-    === "Download"
-
-        ```bash
-        curl -L -O {{ page.canonical_url }}playbook-vm.yaml
-        ```
-
-# Ansible execution environment
+## Ansible execution environment
 
 ??? quote "ansible-navigator.yaml"
 
@@ -71,22 +70,57 @@ icon: material/ansible
     --8<-- "content/kubevirt/ansible/ee-python-requirements.txt"
     ```
 
-# Running the example playbooks
+## Run the playbook with ansible-navigator
 
-```bash
-
+```shell title="Clone and run"
 git clone https://github.com/openshift-examples/kubevirt-ansible.git
 cd kubevirt-ansible
+cp -v $KUBECONFIG .
+export K8S_AUTH_KUBECONFIG=$(basename $KUBECONFIG)
 ansible-navigator run playbook-vm.yaml
-
 ```
 
-# Build / Development
+## Run the playbook with Ansible Automation Platform
 
-## Build Ansible execution environment
+### Create service account for AAP
 
-```bash
+```shell
+% oc create sa aap
+serviceaccount/aap created
+oc create token aap
+% oc policy add-role-to-user admin -z aap
+clusterrole.rbac.authorization.k8s.io/admin added: "aap"
+% oc policy add-role-to-user kubevirt.io:admin -z aap
+clusterrole.rbac.authorization.k8s.io/kubevirt.io:admin added: "aap"
 
+oc create -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aap-token
+  annotations:
+    kubernetes.io/service-account.name: aap
+type: kubernetes.io/service-account-token
+EOF
+```
+
+### Ansible Automatio Plaftorm configuration
+
+* Add credential of the service account to the OpenShift cluster
+* Add the git project
+* Add execution environment
+* Create job
+
+
+## Build / Development
+
+### Build Ansible execution environment
+
+
+
+
+
+```shell title="Build and push execution environment"
 VERSION=$(date +%Y%m%d%H%M)
 
 ansible-builder build \
@@ -96,3 +130,6 @@ ansible-builder build \
 
 podman push quay.io/openshift-examples/kubevirt-ansible-ee:$VERSION
 ```
+
+
+
