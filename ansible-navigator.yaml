@@ -1,19 +1,11 @@
 ---
 ansible-navigator:
   execution-environment:
-    # container-options:
-      # - --net=host
-    # image: quay.io/openshift-examples/kubevirt-ansible-ee:202312291719
-    image: quay.coe.muc.redhat.com/stormshift/automation-execution-environment:202602021722
+    image: quay.io/openshift-examples/kubevirt-ansible-ee:202607301716
     environment-variables:
       pass:
         - KUBECONFIG
         - K8S_AUTH_KUBECONFIG
-    volume-mounts:
-      # Just needed for the upload
-      #- src: "/home/rbohne/virt-ansible-demo"
-      #  dest: "/home/rbohne/virt-ansible-demo"
-      #  options: "Z"
   logging:
     level: info
   mode: stdout

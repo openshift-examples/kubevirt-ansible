@@ -1,14 +1,53 @@
 ---
-version: 1
+version: 3
 
-dependencies:
-  galaxy: ee-requirements.yml
-  python: ee-python-requirements.txt
+options:
+  package_manager_path: /usr/bin/microdnf
+
+images:
+  base_image:
+    name: 'registry.redhat.io/ansible-automation-platform-27/ee-supported-rhel9:1783923018'
 
 additional_build_steps:
-  append:
+  # prepend_builder:
+  #   - ENV PKGMGR_OPTS="--nodocs --setopt=install_weak_deps=0 --setopt=rhocp-4.20-for-rhel-9-x86_64-rpms.enabled=true"
+  # prepend_final:
+  #   - ENV PKGMGR_OPTS="--nodocs --setopt=install_weak_deps=0 --setopt=rhocp-4.20-for-rhel-9-x86_64-rpms.enabled=true"
+  # append_final:
+  #   # Example how to add a root CA to the execution environment
+  #   - RUN curl https://certs.corp.redhat.com/certs/Current-IT-Root-CAs.pem
+  #         -o /etc/pki/ca-trust/source/anchors/RedHat_Current-IT-Root-CAs.pem &&
+  #         update-ca-trust
 
-    # Because: https://github.com/ansible-collections/community.kubevirt/issues/47
-    #   community.kubevirt is UNMAINTAINED
-    - RUN sed -i /usr/share/ansible/collections/ansible_collections/community/kubevirt/plugins/modules/kubevirt_cdi_upload.py -e 's/v1alpha1/v1beta1/'
+dependencies:
+  ansible_core:
+    package_pip: ansible-core==2.21.2
+  ansible_runner:
+    package_pip: ansible-runner>=2.4.3
+  exclude:
+    python:
+      - systemd-python
+  # python:
+  #   - ovirt-engine-sdk-python 
+  #   - six
+  system:
+  #   - nmstate
+    - python3.12
+    - python3.12-devel
+    - python3-pip
+  #   - python3-systemd
+    - python3-wheel        # Fixes the 'legacy setup.py' warning
+    - python3-setuptools   # Standardizes the build environment
+  #   - libxml2-devel
+  #   - libcurl-devel 
+  galaxy:
+    collections:
+# ToDo: add version numbers!
+      - name: community.general
+      - name: community.kubernetes
+      - name: redhat.openshift
+      - name: kubernetes.core
+      - name: ansible.posix
+      - name: community.crypto
+      - name: kubevirt.core
 

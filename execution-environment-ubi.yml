@@ -1,0 +1,32 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: registry.access.redhat.com/ubi9/ubi:latest
+
+# additional_build_steps:
+#   append_final:
+#     - RUN curl https://certs.corp.redhat.com/certs/Current-IT-Root-CAs.pem
+#           -o /etc/pki/ca-trust/source/anchors/RedHat_Current-IT-Root-CAs.pem &&
+#           update-ca-trust
+
+dependencies:
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
+  system:
+    - openssh-clients
+    - sshpass
+  python:
+    # Import for community.general.json_query
+    - jmespath
+  galaxy:
+    collections:
+      - name: community.general
+      - name: community.kubernetes
+      - name: kubernetes.core
+      - name: ansible.posix
+      - name: community.crypto
+      - name: kubevirt.core
