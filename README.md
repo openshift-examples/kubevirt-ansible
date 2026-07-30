@@ -18,7 +18,7 @@ This page provides example Ansible playbooks for managing virtual machines on Op
 
 ## Playbook examples
 
-??? example "Deploy VM"
+???+ example "Deploy VM"
 
     === "Download: playbook-vm.yaml"
 
@@ -36,7 +36,7 @@ This page provides example Ansible playbooks for managing virtual machines on Op
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/3moLU6Ueqr0?si=7DR2Nav-_lajotti" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-??? example "Adjust VM resources"
+???+ example "Adjust VM resources"
 
     === "Download: playbook-adjust-vm.yaml"
 
@@ -52,7 +52,7 @@ This page provides example Ansible playbooks for managing virtual machines on Op
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/y3sGxfFNdlM?si=nOcxoEI3MDAFjL22" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-??? example "Upload an ISO"
+???+ example "Upload an ISO"
 
     === "Download: playbook-upload.yaml"
 
